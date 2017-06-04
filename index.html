@@ -10,6 +10,23 @@
 <body>
     <div id="app" class="container">
         <h3 class="text-center">Vue News</h3>
+        <!--<news-list :results="results"></news-list>-->
+        <section class="callout secondary">
+            <h5 class="text-center">Filter by Category</h5>
+            <form>
+                <div class="row">
+                    <div class="large-6 columns">
+                        <select v-model="section">
+                            <option v-for="section in sections" :value="section">{{ section }}</option>
+                        </select>
+                    </div>
+                    <div class="medium-6 columns">
+                        <a @click="getPosts(section)" class="button expanded">Retrieve</a>
+                    </div>
+                </div>
+            </form>
+        </section>
+
         <news-list :results="results"></news-list>
     </div>
 <!-- include Vue here  -->

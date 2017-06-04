@@ -1,5 +1,7 @@
 const NYTBaseUrl = 'https://api.nytimes.com/svc/topstories/v2/'
 const apiKey = '7d61a6720f1c464dbb2473ebb4823011'; 
+const nytSections = 'home, arts, automobiles, books, business, fashion, food, health, insider, magazine, movies, national, nyregion, obituaries, opinion, politics, realestate, science, sports, sundayreview, technology, theater, tmagazine, travel, upshot, world'; 
+
 
 function buildUrl (url) {
     return NYTBaseUrl + url + ".json?api-key=" + apiKey 
@@ -51,8 +53,9 @@ Vue.component('news-list', {
 const vm = new Vue({
     el: "#app", 
     data: {
-        results: []
-        // posts: []
+        results: [],
+        sections: nytSections.split(','),  //create an array of the sections
+        section: 'home'//set default section 
     }, 
      mounted() {
         this.getPosts('home'); 
@@ -64,6 +67,6 @@ const vm = new Vue({
                 this.results = response.data.results; 
             }).catch( error => { console.log(error); }); 
         }
-    }
+    }, 
 }); 
     
