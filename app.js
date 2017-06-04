@@ -5,14 +5,13 @@ function buildUrl (url) {
     return NYTBaseUrl + url + ".json?api-key=" + apiKey 
 }
 
-const vm = new Vue ({
+const vm = new Vue({
     el: "#app", 
     data: {
         results: []
+        // posts: []
     }, 
      mounted() {
-        // axios.get("https://api.nytimes.com/svc/topstories/v2/home.json?api-key=7d61a6720f1c464dbb2473ebb4823011")
-        // .then(response => {this.results = response.data.results})
         this.getPosts('home'); 
     }, 
     methods: {
@@ -21,6 +20,26 @@ const vm = new Vue ({
             axios.get(url).then((response) => {
                 this.results = response.data.results; 
             }).catch( error => { console.log(error); }); 
+        }
+    }, 
+    computed: {
+        processedPosts() {
+            let posts = this.results;
+
+            // Add image_url attribute
+            // loop through 'results', search 'multimedia' array, find the format
+            // assign the url of that media to the 'image_url' attribute. 
+            posts.map(post => {
+                let imgObj = post.multimedia.find(media => media.format === "superJumbo");
+                post.image_url = imgObj ? imgObj.url : "http://placehold.it/300x200?text=N/A";
+            });
+
+            // Put Array into Chunks
+            let i, j, chunkedArray = [], chunk = 4;
+            for (i=0, j=0; i < posts.length; i += chunk, j++) {
+                chunkedArray[j] = posts.slice(i,i+chunk);
+            }
+            return chunkedArray;
         }
     }
 }); 
