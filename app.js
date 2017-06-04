@@ -1,12 +1,14 @@
+const apiKey = '7d61a6720f1c464dbb2473ebb4823011'; 
+
+
 const vm = new Vue ({
     el: "#app", 
     data: {
-        results: [
-            // mocks res from NYT API with test data
-            {title: 'the very first post', abstract: 'lorem ipsum some test dimpsum'},
-            {title: 'the second post', abstract: 'lorem ipsum some test dimpsum'},
-            {title: 'the lucky thrid post', abstract: 'lorem ipsum some test dimpsum'},
-            {title: 'four the last time', abstract: 'lorem ipsum some test dimpsum'}            
-        ]
-    }
+        results: []
+    }, 
+     mounted() {
+        axios.get("https://api.nytimes.com/svc/topstories/v2/home.json?api-key=7d61a6720f1c464dbb2473ebb4823011")
+        .then(response => {this.results = response.data.results})
+  }
 }); 
+     
