@@ -5,23 +5,27 @@ function buildUrl (url) {
     return NYTBaseUrl + url + ".json?api-key=" + apiKey 
 }
 
-const vm = new Vue({
-    el: "#app", 
-    data: {
-        results: []
-        // posts: []
-    }, 
-     mounted() {
-        this.getPosts('home'); 
-    }, 
-    methods: {
-        getPosts(section) {
-            let url = buildUrl(section); 
-            axios.get(url).then((response) => {
-                this.results = response.data.results; 
-            }).catch( error => { console.log(error); }); 
-        }
-    }, 
+// global component 
+    // Vue.component(tagName, options)
+Vue.component('news-list', {
+    props: ['results'], 
+    template: `
+        <section>
+            <div class="row" v-for="posts in processedPosts">
+                <div class="columns large-3 medium-6" v-for="post in posts">
+                    <div class="card">
+                        <div class="card-divider">
+                            {{ post.title }}
+                        </div>
+                        <a :href="post.url" target="_blank"><img :src="post.image_url"></a>                
+                        <div class="card-section">
+                            <p>{{ post.abstract }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `,
     computed: {
         processedPosts() {
             let posts = this.results;
@@ -40,6 +44,25 @@ const vm = new Vue({
                 chunkedArray[j] = posts.slice(i,i+chunk);
             }
             return chunkedArray;
+        }
+    }
+})
+
+const vm = new Vue({
+    el: "#app", 
+    data: {
+        results: []
+        // posts: []
+    }, 
+     mounted() {
+        this.getPosts('home'); 
+    }, 
+    methods: {
+        getPosts(section) {
+            let url = buildUrl(section); 
+            axios.get(url).then((response) => {
+                this.results = response.data.results; 
+            }).catch( error => { console.log(error); }); 
         }
     }
 }); 
