@@ -1,10 +1,10 @@
 const NYTBaseUrl = 'https://api.nytimes.com/svc/topstories/v2/'
-const apiKey = '7d61a6720f1c464dbb2473ebb4823011'; 
+const apiKey = config.KEY; 
 const nytSections = 'home, arts, automobiles, books, business, fashion, food, health, insider, magazine, movies, national, nyregion, obituaries, opinion, politics, realestate, science, sports, sundayreview, technology, theater, tmagazine, travel, upshot, world'; 
 
 
 function buildUrl (url) {
-    return NYTBaseUrl + url + ".json?api-key=" + apiKey 
+    return NYTBaseUrl + url + ".json?api-key=" + apiKey;  
 }
 
 // global component 
@@ -54,11 +54,13 @@ const vm = new Vue({
     el: "#app", 
     data: {
         results: [],
-        sections: nytSections.split(','),  //create an array of the sections
+        //create an array of the sections. 
+        //nytSections is 'a, b'. can't be split as 'a,b'...big difference
+        sections: nytSections.split(', '),  
         section: 'home'//set default section 
     }, 
      mounted() {
-        this.getPosts('home'); 
+        this.getPosts(this.section); 
     }, 
     methods: {
         getPosts(section) {

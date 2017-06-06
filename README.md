@@ -7,3 +7,4 @@ A great JavaScript tutorial: [Fetching Data from a Third-Party API with Vue.js a
 
 Here is a live demo: 
 [http://vuejs-news.herokuapp.com/](http://vuejs-news.herokuapp.com/)
+
